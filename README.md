@@ -22,7 +22,7 @@ streamlit run src/facerecog.py
 
 # Langkah Pengujian di Web:
    - Di sidebar, masukkan nama folder dataset (contoh:./dataset).
-   - Klik browse files untuk mengunggah gambar baru (*Test Image*) yang ingin dikenali.
+   - Klik browse files untuk mengunggah gambar baru yang ingin dikenali.
    - Sistem akan memproses dataset (menghitung Eigenface) dan mencari kecocokan wajah terdekat.
    - Hasil kemiripan dan nilai jarak Euclidean akan ditampilkan di layar.
 
