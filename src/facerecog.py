@@ -4,7 +4,7 @@ import numpy as np
 import streamlit as st
 import time
 
-#Haar Cascade untuk otomatis crop deteksi wajah
+#Haar Cascade untuk otomatis crop wajah
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 def detect_and_crop_face(img):
@@ -29,6 +29,7 @@ def euclidean_distance(v1, v2):
         dist += (v1[i] - v2[i])**2
     return dist**0.5
 
+# Perhitungan eigenvalues dan eigenvectors
 def eigen(A, num_components=30, iterations=100):
     n = A.shape[0]
     eigenvalues = []
@@ -82,9 +83,13 @@ def process_dataset(dataset_path, img_size=(64, 64)):
     mean_face = np.mean(matrix_images, axis=0)
     phi = matrix_images - mean_face
     
-    C = np.dot(phi.T, phi) / len(images)
-    
-    eigenvalues, eigenfaces = eigen(C, num_components=30)
+    L = np.dot(phi, phi.T) / len(images)
+    eigenvalues, eigenvectors_L = eigen(L, num_components=30)
+    eigenfaces = np.dot(phi.T, eigenvectors_L)
+    for i in range(eigenfaces.shape[1]):
+        norm_val = np.linalg.norm(eigenfaces[:, i])
+        if norm_val != 0:
+            eigenfaces[:, i] = eigenfaces[:, i] / norm_val
     weights = np.dot(phi, eigenfaces)
     
     return mean_face, eigenfaces, weights, labels, image_paths
